@@ -1,3 +1,14 @@
+/*
+ * File: TabPanel.java
+ * Author: Stephanie Brinegar, Kenneth Harris, Neil Kohan, Jeremy Lantz
+ * Course: CMSC 495
+ * Project: vetclinic
+ * Date: 09/24/2019
+ * Platform: Windows 10
+ * Compiler: Netbeans 82
+ * Purpose: creates the GUI
+ */
+
 package vetclinic;
 
 import javax.swing.*;
@@ -24,6 +35,10 @@ public class TabPanel extends JPanel implements ChangeListener {
         JComponent clientPanel = ClientPanel();
         tp.addTab("Client Card", clientPanel);
         tp.setMnemonicAt(0, KeyEvent.VK_3);
+        
+        JComponent updatePanel = UpdatePanel();
+        tp.addTab("Update Fields", updatePanel);
+        tp.setMnemonicAt(0, KeyEvent.VK_4);
         
         add(tp);
         
@@ -133,7 +148,7 @@ public class TabPanel extends JPanel implements ChangeListener {
         petLabel.setBounds( 10, 15, 150, 25 );
         p3.add( petLabel );
         
-        JLabel petData = new JLabel();
+        JTextField petData = new JTextField();
         petData.setBounds( 80, 15, 150, 25 );
         petData.setOpaque(true);
         petData.setBackground(Color.LIGHT_GRAY);
@@ -143,7 +158,7 @@ public class TabPanel extends JPanel implements ChangeListener {
         genderLabel.setBounds( 10, 50, 50, 25 );
         p3.add( genderLabel );
         
-        JLabel genderData = new JLabel();
+        JTextField genderData = new JTextField();
         genderData.setBounds( 60, 50, 50, 25 );
         genderData.setOpaque(true);
         genderData.setBackground(Color.LIGHT_GRAY);
@@ -153,7 +168,7 @@ public class TabPanel extends JPanel implements ChangeListener {
         weightLabel.setBounds( 120, 50, 50, 25 );
         p3.add( weightLabel );
         
-        JLabel weightData = new JLabel();
+        JTextField weightData = new JTextField();
         weightData.setBounds( 180, 50, 50, 25 );
         weightData.setOpaque(true);
         weightData.setBackground(Color.LIGHT_GRAY);
@@ -163,7 +178,7 @@ public class TabPanel extends JPanel implements ChangeListener {
         lastLabel.setBounds( 270, 15, 150, 25 );
         p3.add( lastLabel );
         
-        JLabel lastData = new JLabel();
+        JTextField lastData = new JTextField();
         lastData.setBounds( 400, 15, 150, 25 );
         lastData.setOpaque(true);
         lastData.setBackground(Color.LIGHT_GRAY);
@@ -173,7 +188,7 @@ public class TabPanel extends JPanel implements ChangeListener {
         firstLabel.setBounds( 270, 50, 150, 25 );
         p3.add( firstLabel );
         
-        JLabel firstData = new JLabel();
+        JTextField firstData = new JTextField();
         firstData.setBounds( 400, 50, 150, 25 );
         firstData.setOpaque(true);
         firstData.setBackground(Color.LIGHT_GRAY);
@@ -183,44 +198,164 @@ public class TabPanel extends JPanel implements ChangeListener {
         medLabel.setBounds( 10, 90, 150, 25 );
         p3.add( medLabel );
         
-        JList medList = new JList();
+        JScrollPane medsp = new JScrollPane();
+        medsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        medsp.setBounds( 10, 115, 250, 100 );
+        p3.add( medsp );
+        
+        //DATA TO BE REPLACED with Query
+        String[][] medData = { 
+            { "Heartgard", "Once a month to prevent heartworm" },
+            { "Aspirin Powder", "Apple flavor" }
+        }; 
+        String[] medCol = { "Med Name", "Med Info" };
+        
+        JTable medTable = new JTable(medData, medCol);
+        medTable.setBackground(Color.LIGHT_GRAY);
+        medsp.setViewportView( medTable );
+        
+        /*JList medList = new JList();
         medList.setVisibleRowCount(5);
         medList.setBounds( 10, 115, 250, 100 );
         medList.setBackground(Color.LIGHT_GRAY);
-        p3.add( medList );
+        p3.add( medList );*/
         
         JLabel shotLabel = new JLabel( "Shot List:" );
         shotLabel.setBounds( 10, 225, 150, 25 );
         p3.add( shotLabel );
         
-        JList shotList = new JList();
+        JScrollPane shotsp = new JScrollPane();
+        shotsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        shotsp.setBounds( 10, 250, 250, 100 );
+        p3.add( shotsp );
+        
+        //DATA TO BE REPLACED with Query
+        String[][] shotData = { 
+            { "9-3-18", "Rabies" },
+            { "9-3-18", "Distemper" }
+        }; 
+        String[] shotCol = { "Date", "Shot" };
+        
+        JTable shotTable = new JTable(shotData, shotCol);
+        shotTable.setBackground(Color.LIGHT_GRAY);
+        shotsp.setViewportView( shotTable );
+        
+        /*JList shotList = new JList();
         shotList.setVisibleRowCount(5);
         shotList.setBounds( 10, 250, 250, 100 );
         shotList.setBackground(Color.LIGHT_GRAY);
-        p3.add( shotList );
+        p3.add( shotList );*/
         
         JLabel apptLabel = new JLabel( "Appointments:" );
         apptLabel.setBounds( 300, 90, 150, 25 );
         p3.add( apptLabel );
         
-        JScrollPane sp = new JScrollPane();
-        sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        sp.setBounds( 300, 115, 250, 240 );
-        p3.add( sp );
+        JScrollPane apptsp = new JScrollPane();
+        apptsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        apptsp.setBounds( 300, 115, 250, 240 );
+        p3.add( apptsp );
         
         //DATA TO BE REPLACED with Query
-        String[][] data = { 
+        //loadAppointment()
+        String[][] apptData = { 
             { "9-3-19", "9:30am", "30" },
             { "9-12-19", "10:00am", "15" }
         }; 
-        String[] colNames = { "Date", "Time", "Duration" };
+        String[] apptCol = { "Date", "Time", "Duration" };
         
-        JTable apptTable = new JTable(data, colNames);
+        JTable apptTable = new JTable(apptData, apptCol);
         apptTable.setBackground(Color.LIGHT_GRAY);
-        sp.setViewportView( apptTable );
+        apptsp.setViewportView( apptTable );
         p3.setVisible(true);
+        
+        JButton update = new JButton( "Update" );
+        update.setBounds( 450, 375, 115, 30);
+        p3.add( update );
             
         return p3;
+    }
+    
+    protected JComponent UpdatePanel() {
+        JPanel p4 = new JPanel();
+        p4.setLayout( null );
+        
+        JLabel petLabel = new JLabel( "Pet Name:" );
+        petLabel.setBounds( 20, 15, 150, 25 );
+        p4.add( petLabel );
+        
+        JTextField petField = new JTextField();
+        petField.setBounds( 145, 15, 150, 25 );
+        p4.add( petField );
+        
+        //Panel to either add to medication list (addMed button) or
+        //Update client med list if petField is supplied (update button)
+        JPanel medPanel = new JPanel();
+        medPanel.setOpaque(true);
+        medPanel.setBorder(
+            BorderFactory.createTitledBorder("Medication List"));
+        medPanel.setLayout(new GroupLayout(medPanel));
+        medPanel.setBounds( 10, 50, 500, 125);
+        
+        JLabel medLabel = new JLabel( "Medication:" );
+        medLabel.setBounds( 10, 20, 150, 25 );
+        medPanel.add( medLabel );
+        
+        JTextField medField = new JTextField();
+        medField.setBounds( 135, 20, 150, 25 );
+        medPanel.add( medField );
+        
+        JLabel medInfoLabel = new JLabel( "Medication Info:" );
+        medInfoLabel.setBounds( 10, 60, 150, 25 );
+        medPanel.add( medInfoLabel );
+        
+        JTextArea medInfoField = new JTextArea();
+        medInfoField.setLineWrap(true);
+        medInfoField.setBounds( 135, 60, 200, 50 );
+        medInfoField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        medPanel.add( medInfoField );
+        
+        JButton addMed = new JButton("Add to List");
+        addMed.setBounds( 375, 80, 100, 30 );
+        medPanel.add( addMed );
+        
+        //Panel to either add to shot list (addShot button) or
+        //Update client shot list if petField is supplied (update button)
+        JPanel shotPanel = new JPanel();
+        shotPanel.setOpaque(true);
+        shotPanel.setBorder(
+            BorderFactory.createTitledBorder("Shot / Vaccine List"));
+        shotPanel.setLayout(new GroupLayout(shotPanel));
+        shotPanel.setBounds( 10, 190, 500, 60);
+        
+        JLabel shotLabel = new JLabel( "Shot:" );
+        shotLabel.setBounds( 10, 20, 150, 25 );
+        shotPanel.add( shotLabel );
+        
+        JTextField shotField = new JTextField();
+        shotField.setBounds( 135, 20, 150, 25 );
+        shotPanel.add( shotField );
+        
+        JButton addShot = new JButton("Add to List");
+        addShot.setBounds( 375, 20, 100, 30 );
+        shotPanel.add( addShot );
+        
+        JLabel dateLabel = new JLabel( "Shot Date:" );
+        dateLabel.setBounds( 20, 265, 150, 25 );
+        p4.add( dateLabel );
+        
+        JTextField dateField = new JTextField();
+        dateField.setBounds( 145, 265, 150, 25 );
+        p4.add( dateField );
+        
+        JButton search = new JButton( "Update Client" );
+        search.setBounds( 195, 315, 150, 30);
+        p4.add( search );
+        
+        p4.add( medPanel,BorderLayout.CENTER );
+        p4.add( shotPanel,BorderLayout.CENTER );
+        
+        return p4;
+        
     }
     
     private static void showFrame() {
@@ -248,4 +383,3 @@ public class TabPanel extends JPanel implements ChangeListener {
     }
     
 }
-
