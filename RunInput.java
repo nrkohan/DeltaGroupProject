@@ -105,4 +105,22 @@ public class RunInput {
         return requestedField;
     }
     
+    public Boolean checkClient(Integer checkAnimalID, String petName, String gender,
+                            String weight, String lastName, String firstName, 
+                            String[] medList, String[] shotList){
+        
+        //If we had an animal ID wasn't passed pass to the database to add or retrieve the animalID
+        if (checkAnimalID.equals(0)){
+            checkAnimalID = Database.postAnimal(petName, lastName, firstName, gender, weight);
+        }
+        
+        //Now that we have an ID then post the medications
+        Database.postMedication(checkAnimalID, medList);
+        
+        //Lastly post the shots
+        Database.postShots(checkAnimalID, shotList);
+        
+        return true;
+    }
+    
 }

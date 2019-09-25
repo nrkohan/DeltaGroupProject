@@ -41,4 +41,18 @@ public class Database {
     public String getLastName(Integer animalID){
         return "Doe";
     }
+    
+    public Integer postAnimal(String petName, String lastName, String firstName,
+                              String Gender, String weight){
+        
+        return 1;
+    }
+    
+    public void postMedication(Integer animalID, String[] medList){
+        
+    }
+    
+    public void postShots(Integer animalID, String[] shotList){
+        
+    }
 }
