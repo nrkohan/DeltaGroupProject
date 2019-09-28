@@ -57,16 +57,26 @@ public class TabPanel extends JPanel implements ChangeListener {
         petField.setBounds( 200, 150, 150, 25 );
         p1.add( petField );
         
+        JRadioButton r1 = new JRadioButton("And");
+        JRadioButton r2 = new JRadioButton("Or");
+        r1.setBounds( 200, 185, 50, 25 );
+        r2.setBounds( 275, 185, 50, 25 );
+        ButtonGroup bg = new ButtonGroup();
+        bg.add( r1 );
+        bg.add( r2 );
+        p1.add( r1 );
+        p1.add( r2 );
+        
         JLabel ownerLabel = new JLabel( "Owner Last Name:" );
-        ownerLabel.setBounds( 75, 190, 150, 25 );
+        ownerLabel.setBounds( 75, 225, 150, 25 );
         p1.add( ownerLabel );
         
         JTextField ownerField = new JTextField();
-        ownerField.setBounds( 200, 190, 150, 25 );
+        ownerField.setBounds( 200, 225, 150, 25 );
         p1.add( ownerField );
         
         JButton search = new JButton( "Search" );
-        search.setBounds( 185, 240, 80, 30);
+        search.setBounds( 185, 275, 80, 30);
         p1.add( search );
         
         return p1;
