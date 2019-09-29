@@ -16,29 +16,42 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.KeyEvent;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class TabPanel extends JPanel implements ChangeListener {
+    
+    Integer animalID = 0;
+    JTextField petField, ownerField;
+    JTextField firstField, lastField, doctorField, dateField, timeField, durField;
+    JTextField petData, genderData, weightData, lastData, firstData;
+    JTextField updatePetField, updateMedField, updateShotField, updateDateField;
+    JList medList, shotList; 
+    RunInput RunInput = new RunInput();
+    Database Database = new Database();
+    JTabbedPane tp;
+    String[] medicationList, shotsList;
+    JComponent searchPanel, apptPanel, clientPanel, updatePanel; 
     
     public TabPanel() {
         super(new GridLayout(1, 1));
         
-        JTabbedPane tp = new JTabbedPane();
+        tp = new JTabbedPane();
         
-        JComponent searchPanel = SearchPanel();
+        searchPanel = SearchPanel();
         tp.addTab("Search", searchPanel);
         tp.setMnemonicAt(0, KeyEvent.VK_1);
         
-        JComponent apptPanel = ApptPanel();
+        apptPanel = ApptPanel();
         tp.addTab("Schedule an Appointment", apptPanel);
-        tp.setMnemonicAt(0, KeyEvent.VK_2);
+        tp.setMnemonicAt(1, KeyEvent.VK_2);
         
-        JComponent clientPanel = ClientPanel();
+        clientPanel = ClientPanel();
         tp.addTab("Client Card", clientPanel);
-        tp.setMnemonicAt(0, KeyEvent.VK_3);
+        tp.setMnemonicAt(2, KeyEvent.VK_3);
         
-        JComponent updatePanel = UpdatePanel();
+        updatePanel = UpdatePanel();
         tp.addTab("Update Fields", updatePanel);
-        tp.setMnemonicAt(0, KeyEvent.VK_4);
+        tp.setMnemonicAt(3, KeyEvent.VK_4);
         
         add(tp);
         
@@ -48,12 +61,13 @@ public class TabPanel extends JPanel implements ChangeListener {
     protected JComponent SearchPanel() {
         JPanel p1 = new JPanel();
         p1.setLayout( null );
+        animalID = 0;
         
         JLabel petLabel = new JLabel( "Pet Name:" );
         petLabel.setBounds( 75, 150, 150, 25 );
         p1.add( petLabel );
         
-        JTextField petField = new JTextField();
+        petField = new JTextField();
         petField.setBounds( 200, 150, 150, 25 );
         p1.add( petField );
         
@@ -68,10 +82,10 @@ public class TabPanel extends JPanel implements ChangeListener {
         p1.add( r2 );
         
         JLabel ownerLabel = new JLabel( "Owner Last Name:" );
-        ownerLabel.setBounds( 75, 225, 150, 25 );
+        ownerLabel.setBounds( 75, 190, 150, 25 );
         p1.add( ownerLabel );
         
-        JTextField ownerField = new JTextField();
+        ownerField = new JTextField();
         ownerField.setBounds( 200, 225, 150, 25 );
         p1.add( ownerField );
         
@@ -79,18 +93,43 @@ public class TabPanel extends JPanel implements ChangeListener {
         search.setBounds( 185, 275, 80, 30);
         p1.add( search );
         
+        search.addActionListener(e -> searchInput());
+        
         return p1;
     }
+    
+    private void searchInput(){
+        //Pull in the screen values
+        String petName = petField.getText();
+        String lastName = ownerField.getText();
+        animalID = 0;
+        
+        //Check for a animal ID based on the input fields
+        Integer checkID = RunInput.checkSearch(petName, lastName);
+        
+        //If the animal ID is null on return stay on the same tab
+        //otherwise trigger the client tab
+        if (checkID.equals(0)){
+            //stay here
+        } else{
+            //trigger the client card tab
+            animalID = checkID;
+            clientPanel.repaint();
+            tp.setSelectedComponent(clientPanel);
+        }
+    }
+    
     
     protected JComponent ApptPanel() {
         JPanel p2 = new JPanel();
         p2.setLayout( null );
+        animalID = 0;
         
         JLabel petLabel = new JLabel( "Pet Name:" );
         petLabel.setBounds( 10, 15, 150, 25 );
         p2.add( petLabel );
         
-        JTextField petField = new JTextField();
+        petField = new JTextField();
         petField.setBounds( 135, 15, 150, 25 );
         p2.add( petField );
         
@@ -98,7 +137,7 @@ public class TabPanel extends JPanel implements ChangeListener {
         firstLabel.setBounds( 10, 50, 150, 25 );
         p2.add( firstLabel );
         
-        JTextField firstField = new JTextField();
+        firstField = new JTextField();
         firstField.setBounds( 135, 50, 150, 25 );
         p2.add( firstField );
         
@@ -106,7 +145,7 @@ public class TabPanel extends JPanel implements ChangeListener {
         lastLabel.setBounds( 10, 85, 150, 25 );
         p2.add( lastLabel );
         
-        JTextField lastField = new JTextField();
+        lastField = new JTextField();
         lastField.setBounds( 135, 85, 150, 25 );
         p2.add( lastField );
         
@@ -114,7 +153,7 @@ public class TabPanel extends JPanel implements ChangeListener {
         doctorLabel.setBounds( 10, 120, 150, 25 );
         p2.add( doctorLabel );
         
-        JTextField doctorField = new JTextField();
+        doctorField = new JTextField();
         doctorField.setBounds( 135, 120, 150, 25 );
         p2.add( doctorField );
         
@@ -122,7 +161,7 @@ public class TabPanel extends JPanel implements ChangeListener {
         dateLabel.setBounds( 10, 155, 150, 25 );
         p2.add( dateLabel );
         
-        JTextField dateField = new JTextField();
+        dateField = new JTextField();
         dateField.setBounds( 135, 155, 150, 25 );
         p2.add( dateField );
         
@@ -130,7 +169,7 @@ public class TabPanel extends JPanel implements ChangeListener {
         timeLabel.setBounds( 10, 190, 150, 25 );
         p2.add( timeLabel );
         
-        JTextField timeField = new JTextField();
+        timeField = new JTextField();
         timeField.setBounds( 135, 190, 150, 25 );
         p2.add( timeField );
         
@@ -138,7 +177,7 @@ public class TabPanel extends JPanel implements ChangeListener {
         durLabel.setBounds( 10, 225, 150, 25 );
         p2.add( durLabel );
         
-        JTextField durField = new JTextField();
+        durField = new JTextField();
         durField.setBounds( 135, 225, 150, 25 );
         p2.add( durField );
         
@@ -146,19 +185,58 @@ public class TabPanel extends JPanel implements ChangeListener {
         search.setBounds( 185, 270, 150, 30);
         p2.add( search );
         
+        search.addActionListener(e -> apptInput());
+        
         return p2;
+        
+    }
+    
+    private void apptInput(){
+        
+        //first go retrieve the values off the screen
+        String petName = petField.getText();
+        String firstName = firstField.getText();
+        String lastName = lastField.getText();
+        String doctor = doctorField.getText();
+        String apptDate = dateField.getText();
+        String apptTime = timeField.getText();
+        String duration = durField.getText();
+        
+        //Now go check if we can accept this appointment
+        Boolean validAppt = RunInput.checkNewAppt(petName, firstName, lastName, 
+                doctor, apptDate, apptTime, duration);
+        
+        //If we were successful in generating an appointment then clear the screen
+        if (validAppt == true){
+            petField.setText("");
+            firstField.setText("");
+            lastField.setText("");
+            doctorField.setText("");
+            dateField.setText("");
+            timeField.setText("");
+            durField.setText("");
+        }
+                
         
     }
     
     protected JComponent ClientPanel() {
         JPanel p3 = new JPanel();
         p3.setLayout( null );
+        String animalName, firstName, lastName;
+        
+        //If the animal ID is loaded coming in here then go load our information
+        if (animalID > 0){
+            animalName = RunInput.getAnimalInfo(animalID, "animalName");
+            firstName = RunInput.getAnimalInfo(animalID, "firstName");
+            lastName = RunInput.getAnimalInfo(animalID, "lastName");
+        }
         
         JLabel petLabel = new JLabel( "Pet Name:" );
         petLabel.setBounds( 10, 15, 150, 25 );
         p3.add( petLabel );
         
-        JTextField petData = new JTextField();
+        petData = new JTextField();
         petData.setBounds( 80, 15, 150, 25 );
         petData.setOpaque(true);
         petData.setBackground(Color.LIGHT_GRAY);
@@ -168,7 +246,7 @@ public class TabPanel extends JPanel implements ChangeListener {
         genderLabel.setBounds( 10, 50, 50, 25 );
         p3.add( genderLabel );
         
-        JTextField genderData = new JTextField();
+        genderData = new JTextField();
         genderData.setBounds( 60, 50, 50, 25 );
         genderData.setOpaque(true);
         genderData.setBackground(Color.LIGHT_GRAY);
@@ -178,7 +256,7 @@ public class TabPanel extends JPanel implements ChangeListener {
         weightLabel.setBounds( 120, 50, 50, 25 );
         p3.add( weightLabel );
         
-        JTextField weightData = new JTextField();
+        weightData = new JTextField();
         weightData.setBounds( 180, 50, 50, 25 );
         weightData.setOpaque(true);
         weightData.setBackground(Color.LIGHT_GRAY);
@@ -188,7 +266,7 @@ public class TabPanel extends JPanel implements ChangeListener {
         lastLabel.setBounds( 270, 15, 150, 25 );
         p3.add( lastLabel );
         
-        JTextField lastData = new JTextField();
+        lastData = new JTextField();
         lastData.setBounds( 400, 15, 150, 25 );
         lastData.setOpaque(true);
         lastData.setBackground(Color.LIGHT_GRAY);
@@ -198,7 +276,7 @@ public class TabPanel extends JPanel implements ChangeListener {
         firstLabel.setBounds( 270, 50, 150, 25 );
         p3.add( firstLabel );
         
-        JTextField firstData = new JTextField();
+        firstData = new JTextField();
         firstData.setBounds( 400, 50, 150, 25 );
         firstData.setOpaque(true);
         firstData.setBackground(Color.LIGHT_GRAY);
@@ -282,8 +360,40 @@ public class TabPanel extends JPanel implements ChangeListener {
         update.setBounds( 450, 375, 115, 30);
         p3.add( update );
             
+        update.addActionListener(e -> clientInput());
+            
         return p3;
     }
+    
+    private void clientInput(){
+        
+        //Retrieve the screen values
+        String petName = petData.getText();
+        String gender = genderData.getText();
+        String weight = weightData.getText();
+        String lastName = lastData.getText();
+        String firstName = firstData.getText();
+        
+        //Retrieve the medication list
+        for (int m = 0; m < medList.getModel().getSize(); m++){
+            medicationList[m] = String.valueOf(medList.getModel().getElementAt(m));
+        }
+        
+        //Retrieve the shots list
+        for (int s = 0; s < shotList.getModel().getSize(); s++){
+            shotsList[s] = String.valueOf(shotList.getModel().getElementAt(s));
+        }
+        
+        //Go run any validation and posting logic
+        Boolean clientCheck = RunInput.checkClient(animalID, petName, gender, weight, 
+                lastName, firstName, medicationList, shotsList);
+        
+        //If everything went well then clear the screen
+        if (clientCheck == true){
+            
+        }
+            
+    }    
     
     protected JComponent UpdatePanel() {
         JPanel p4 = new JPanel();
@@ -293,9 +403,9 @@ public class TabPanel extends JPanel implements ChangeListener {
         petLabel.setBounds( 20, 15, 150, 25 );
         p4.add( petLabel );
         
-        JTextField petField = new JTextField();
-        petField.setBounds( 145, 15, 150, 25 );
-        p4.add( petField );
+        updatePetField = new JTextField();
+        updatePetField.setBounds( 145, 15, 150, 25 );
+        p4.add( updatePetField );
         
         //Panel to either add to medication list (addMed button) or
         //Update client med list if petField is supplied (update button)
@@ -310,9 +420,9 @@ public class TabPanel extends JPanel implements ChangeListener {
         medLabel.setBounds( 10, 20, 150, 25 );
         medPanel.add( medLabel );
         
-        JTextField medField = new JTextField();
-        medField.setBounds( 135, 20, 150, 25 );
-        medPanel.add( medField );
+        updateMedField = new JTextField();
+        updateMedField.setBounds( 135, 20, 150, 25 );
+        medPanel.add( updateMedField );
         
         JLabel medInfoLabel = new JLabel( "Medication Info:" );
         medInfoLabel.setBounds( 10, 60, 150, 25 );
@@ -341,9 +451,9 @@ public class TabPanel extends JPanel implements ChangeListener {
         shotLabel.setBounds( 10, 20, 150, 25 );
         shotPanel.add( shotLabel );
         
-        JTextField shotField = new JTextField();
-        shotField.setBounds( 135, 20, 150, 25 );
-        shotPanel.add( shotField );
+        updateShotField = new JTextField();
+        updateShotField.setBounds( 135, 20, 150, 25 );
+        shotPanel.add( updateShotField );
         
         JButton addShot = new JButton("Add to List");
         addShot.setBounds( 375, 20, 100, 30 );
@@ -353,9 +463,9 @@ public class TabPanel extends JPanel implements ChangeListener {
         dateLabel.setBounds( 20, 265, 150, 25 );
         p4.add( dateLabel );
         
-        JTextField dateField = new JTextField();
-        dateField.setBounds( 145, 265, 150, 25 );
-        p4.add( dateField );
+        updateDateField = new JTextField();
+        updateDateField.setBounds( 145, 265, 150, 25 );
+        p4.add( updateDateField );
         
         JButton search = new JButton( "Update Client" );
         search.setBounds( 195, 315, 150, 30);
